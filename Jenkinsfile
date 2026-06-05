@@ -1,7 +1,7 @@
 pipeline {
 agent any
 
-```
+
 environment {
     IMAGE_NAME = "myapp"
     CONTAINER_NAME = "myapp-container"
@@ -11,29 +11,29 @@ stages {
 
     stage('Build Docker Image') {
         steps {
-            sh """
-            docker build -t ${IMAGE_NAME}:latest .
-            """
+            sh '''
+            docker build -t myapp:latest .
+            '''
         }
     }
 
     stage('Stop Existing Container') {
         steps {
-            sh """
-            docker stop ${CONTAINER_NAME} || true
-            docker rm ${CONTAINER_NAME} || true
-            """
+            sh '''
+            docker stop myapp-container || true
+            docker rm myapp-container || true
+            '''
         }
     }
 
     stage('Run Container') {
         steps {
-            sh """
+            sh '''
             docker run -d \
-            --name ${CONTAINER_NAME} \
+            --name myapp-container \
             -p 80:80 \
-            ${IMAGE_NAME}:latest
-            """
+            myapp:latest
+            '''
         }
     }
 }
@@ -47,6 +47,6 @@ post {
         echo 'Pipeline failed!'
     }
 }
-```
+
 
 }
